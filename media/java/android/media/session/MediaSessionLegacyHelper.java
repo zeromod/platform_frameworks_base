@@ -181,10 +181,14 @@ public class MediaSessionLegacyHelper {
             Log.w(TAG, "Tried to send a null key event. Ignoring.");
             return;
         }
+        if (stream == Integer.MIN_VALUE || AudioSystem.STREAM_RING)
+            stream = AudioSystem.STREAM_MUSIC;
         mSessionManager.dispatchVolumeKeyEvent(keyEvent, stream, musicOnly);
     }
 
     public void sendAdjustVolumeBy(int suggestedStream, int delta, int flags) {
+        if (suggestedStream == Integer.MIN_VALUE || AudioSystem.STREAM_RING)
+            suggestedStream = AudioSystem.STREAM_MUSIC;
         mSessionManager.dispatchAdjustVolume(suggestedStream, delta, flags);
         if (DEBUG) {
             Log.d(TAG, "dispatched volume adjustment");
